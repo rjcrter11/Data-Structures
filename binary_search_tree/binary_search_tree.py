@@ -72,11 +72,9 @@ class BSTNode:
         # If yes, use get_max recursively on right side for max value
         # If no, max value is the root
 
-        current_max = self.value
         if not self.right:
-            return current_max
-        else:
-            return self.right.get_max()
+            return self.value
+        return self.right.get_max()
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
@@ -139,10 +137,8 @@ bst.insert(5)
 bst.insert(11)
 bst.insert(7)
 bst.insert(9)
-# print(bst)
-# print(bst.contains(12))
-# print(bst.contains(16))
+print(bst.contains(12))
+print(bst.contains(16))
 print(bst.get_max())
-print(arr)
 bst.for_each(fn)
 print(arr)
