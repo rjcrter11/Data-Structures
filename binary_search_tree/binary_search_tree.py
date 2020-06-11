@@ -1,3 +1,5 @@
+from collections import deque
+
 """
 Binary search trees are a data structure that enforce an ordering over
 the data they store. That ordering in turn makes it a lot more efficient
@@ -17,13 +19,8 @@ class BSTNode:
         self.left = None
         self.right = None
 
-    def __repr__(self):
-        return f"Value: {self.value} \nLeft: {self.left} \nRight: {self.right}"
-
     # Insert the given value into the tree
     def insert(self, value):
-
-        # TODO:
         # Check if value is less than the root
         # If yes, check if there is a left side
         # If not, create one
@@ -44,8 +41,6 @@ class BSTNode:
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-
-        # TODO:
         # Check if target is the root, if so, return true
         # If not, first check if its lesser
         # If so, check if there is a left node already
@@ -65,7 +60,6 @@ class BSTNode:
 
     # Return the maximum value found in the tree
     def get_max(self):
-        # TODO:
         # Make variable for max value that is the root
         # Left side can be excluded
         # Check if right side exists
@@ -78,7 +72,6 @@ class BSTNode:
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        # TODO:
         # Call fn on root
         # If left exists, call fn recursively
         # If right exists, call fn recursively
@@ -94,51 +87,98 @@ class BSTNode:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        # Set a base case
+        # Recursively print left side, then root, then right side
+        if not node:
+            return None
+        self.in_order_print(node.left)
+        print(node.value)
+        self.in_order_print(node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+        # Breadth first uses queue, so import
+        # Append the given node to the queue
+        # Loop through, popping off the first in line
+        # Print current node in each iteration
+        # Check left, then right and append each node to the queue to be printed
+        queue = deque()
+        queue.append(node)
+        while len(queue) != 0:
+            current = queue.popleft()
+            if current.left:
+                queue.append(current.left)
+            if current.right:
+                queue.append(current.right)
+            print(current.value)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        # Depth first uses a stack, use the same import, pop instead of popleft
+        # Append the given node
+        # Loop through, popping off the back of the stack
+        # Print each node
+        # Check left and right appending to the stack to be printed
+        stack = deque()
+        stack.append(node)
+        while len(stack) != 0:
+            current = stack.pop()
+
+            if current.left:
+                stack.append(current.left)
+            if current.right:
+                stack.append(current.right)
+            print(current.value)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
 
     # Print Pre-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+        # Set the base case - when something hits none
+        # lol. According to the test file, print the root, then the left side, then right
+        if not node:
+            return None
+        print(node.value)
+        self.pre_order_dft(node.left)
+        self.pre_order_dft(node.right)
+
+    # NOTES:
+    #       === Iterative pre order ===
+    # def pre_order_dft_iterative(self, node):
+    #     stack = deque()
+    #     stack.append(node)
+    #     while stack:
+    #         current = stack.pop()
+    #         print(current.value)
+    #         if current.right:
+    #             stack.append(current.right)
+    #         if current.left:
+    #             stack.append(current.left)
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
+        # Same as the other one, just print the root last
+        if not node:
+            return None
+        self.post_order_dft(node.left)
+        self.post_order_dft(node.right)
+        print(node.value)
 
-
-arr = []
-def fn(x): return arr.append(x)
-
-
-bst = BSTNode(8)
-bst.insert(4)
-bst.insert(12)
-bst.insert(2)
-bst.insert(14)
-bst.insert(6)
-bst.insert(10)
-bst.insert(1)
-bst.insert(15)
-bst.insert(3)
-bst.insert(13)
-bst.insert(5)
-bst.insert(11)
-bst.insert(7)
-bst.insert(9)
-print(bst.contains(12))
-print(bst.contains(16))
-print(bst.get_max())
-bst.for_each(fn)
-print(arr)
+    # NOTES:
+    #       === Iterative post order ===
+    # def post_order_dft_iterative(self, node):
+    #     stack = deque()
+    #     stack.append(node)
+    #     root = deque()
+    #     while stack:
+    #         current = stack.pop()
+    #         root.append(current.value)
+    #         if current.left:
+    #             stack.append(current.left)
+    #         if current.right:
+    #             stack.append(current.right)
+    #     while root:
+    #         print(root.pop())
